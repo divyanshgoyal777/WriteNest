@@ -9,6 +9,7 @@ const Blog = () => {
   const [filteredPosts, setFilteredPosts] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -22,6 +23,8 @@ const Blog = () => {
       } catch (error) {
         setError("Failed to fetch blog posts");
         console.error(error);
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,33 +84,41 @@ const Blog = () => {
           </div>
         </div>
         <div className="container mx-auto py-3 px-2">
-          {error && <p className="text-red-500">{error}</p>}
-          {filteredPosts.length === 0 ? (
-            <p className="text-center text-gray-700">
-              No blogs found according to your search.
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {filteredPosts.map((post) => (
-                <div
-                  key={post._id}
-                  className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
-                >
-                  <h2 className="text-xl font-semibold mb-4">
-                    {highlightText(post.title, searchQuery)}
-                  </h2>
-                  <p className="text-gray-700 mb-4">
-                    {highlightText(post.summary, searchQuery)}
-                  </p>
-                  <Link
-                    to={`/blog/${post._id}`}
-                    className="text-blue-500 hover:underline"
-                  >
-                    Read More →
-                  </Link>
-                </div>
-              ))}
+          {loading ? ( 
+            <div className="flex justify-center items-center h-48">
+              <div className="w-16 h-16 border-t-4 border-blue-500 border-solid rounded-full animate-spin"></div>
             </div>
+          ) : (
+            <>
+              {error && <p className="text-red-500">{error}</p>}
+              {filteredPosts.length === 0 ? (
+                <p className="text-center text-gray-700">
+                  No blogs found according to your search.
+                </p>
+              ) : (
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {filteredPosts.map((post) => (
+                    <div
+                      key={post._id}
+                      className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow"
+                    >
+                      <h2 className="text-xl font-semibold mb-4">
+                        {highlightText(post.title, searchQuery)}
+                      </h2>
+                      <p className="text-gray-700 mb-4">
+                        {highlightText(post.summary, searchQuery)}
+                      </p>
+                      <Link
+                        to={`/blog/${post._id}`}
+                        className="text-blue-500 hover:underline"
+                      >
+                        Read More →
+                      </Link>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
