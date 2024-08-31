@@ -5,9 +5,7 @@ import { loadStripe } from "@stripe/stripe-js";
 
 const PaymentCard = () => {
   const makePayment = async () => {
-    const stripe = await loadStripe(
-      "pk_test_51PrjPYJbBBmYb7W02Yue1Nld3wQTOIAVILslfMTuX94Jc2inT3y7f5H8hcyjDgkrXxcRMNuSZXfqbIyyLtxm2YqJ00oXYLFxoO"
-    );
+    const stripe = await loadStripe(`${process.env.STRIPE_PUBLIC_KEY}`);
     const headers = {
       "Content-Type": "application/json",
     };
