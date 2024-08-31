@@ -222,8 +222,8 @@ router.post("/create-checkout-session", async (req, res) => {
       },
     ],
     mode: "payment",
-    success_url: `${process.env.CLIENT_URL}/success`,
-    cancel_url: `${process.env.CLIENT_URL}/cancel`,
+    success_url: "https://writenest.netlify.app//success",
+    cancel_url: "https://writenest.netlify.app//cancel",
   });
 
   res.json({ id: session.id });
